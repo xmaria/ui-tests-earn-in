@@ -26,6 +26,7 @@ jobs:
       env:
         DEBUG: playwright:*
       run: npx playwright test --update-snapshots
+      continue-on-error: true
 
     - name: Check for snapshot changes
       id: check_changes
