@@ -38,7 +38,7 @@ jobs:
           libvpx-dev \
           libicu-dev \ 
           fonts-noto \
-          fonts-dejavu
+          fonts-dejavu \
 
     - name: Install dependencies
       run: npm install
