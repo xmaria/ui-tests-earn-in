@@ -3,6 +3,9 @@ name: Update Playwright Baseline Snapshots
 on:
   workflow_dispatch:  # Allows manual triggering
 
+permissions:
+  contents: write 
+
 jobs:
   update_snapshots:
     runs-on: ubuntu-20.04
@@ -48,7 +51,9 @@ jobs:
       run: |
         git add 'snapshots/**/*'  # Adjust this path based on your directory structure
         git commit -m "Update snapshots from CI"
-        git push origin main  # Change 'main' to your default branch if different
+        git push
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: No changes to commit
       if: steps.check_changes.outcome != 'success'
