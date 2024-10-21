@@ -50,7 +50,7 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: update_snapshot_html_report
-        path: '**/html_report/**/*'
+        path: '**/html-report/**/*'
 
     - name: Check for snapshot changes
       id: check_changes
