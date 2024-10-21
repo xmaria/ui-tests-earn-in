@@ -7,11 +7,6 @@ jobs:
   update_snapshots:
     runs-on: ubuntu-latest
 
-    services:
-      xvfb:  # Enable X virtual framebuffer for GUI apps like Playwright
-        image: 'jwalton/xvfb:latest'
-        options: '--privileged'
-
     steps:
     - name: Checkout code
       uses: actions/checkout@v2
