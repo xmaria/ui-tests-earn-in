@@ -16,32 +16,33 @@ jobs:
       with:
         node-version: '20'
     
-    - name: Install WebKit dependencies
+    - name: Install Browser Dependencies
       run: |
         sudo apt-get update
         sudo apt-get install -y \
-            libx11-xcb1 \
-            libxcomposite1 \
-            libxdamage1 \
-            libxrandr2 \
-            libgbm-dev \
-            libgtk-3-0 \
-            libnotify4 \
-            libgconf-2-4 \
-            libasound2 \
-            libnss3 \
-            libxss1 \
-            libxtst6 \
-            libxshmfence1
+          libgtk-3-0 \
+          libxss1 \
+          libasound2 \
+          libx11-xcb1 \
+          libnss3 \
+          libgconf-2-4 \
+          libxcomposite1 \
+          libxrandr2 \
+          libxi6 \
+          libgdk-pixbuf2.0-0 \
+          libjpeg-dev \
+          fonts-liberation \
+          libglib2.0-0 \
+          libxss1 \
+          libwebp6 \
+          libvpx6 \
+          libicu66
 
     - name: Install dependencies
       run: npm install
 
     - name: Install Playwright Browsers
       run: npx playwright install
-
-    - name: Install Playwright dependencies
-      run: sudo npx playwright install-deps
 
     - name: Run Playwright tests and update snapshots
       env:
