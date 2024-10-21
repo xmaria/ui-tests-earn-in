@@ -1,7 +1,11 @@
-name: Commit Updated Snapshots (manual)
+name: Commit Snapshot Changes
 
 on:
-  workflow_dispatch:  # Manual trigger for approval to commit
+  workflow_dispatch:  # Allows manual triggering
+  workflow_run:
+    workflows: ["Generate Playwright Snapshots"]
+    types:
+      - completed
 
 jobs:
   commit_snapshots:
@@ -9,22 +13,36 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
+
+    - name: Download Snapshot Artifacts
+      uses: actions/download-artifact@v4
+      with:
+        name: updated-snapshots
 
     - name: Set up Node.js
-      uses: actions/setup-node@v2
+      uses: actions/setup-node@v3
       with:
-        node-version: '16'
+        node-version: '20'  # Specify your Node.js version
 
     - name: Configure Git
       run: |
-        git config --global user.name "github-actions[bot]"
-        git config --global user.email "github-actions[bot]@users.noreply.github.com"
+        git config --local user.name "github-actions"
+        git config --local user.email "github-actions@github.com"
 
-    - name: Commit updated snapshots
+    - name: Check for changes
+      id: check_changes
       run: |
-        git add .
-        git commit -m "Manually approved: Updated snapshots"
-        git push
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        git status
+        git diff --exit-code || echo "Changes detected"
+
+    - name: Commit changes if any
+      if: steps.check_changes.outcome == 'success'
+      run: |
+        git status
+        git add '**/snapshots/**/*'  # Adjust this path based on your directory structure
+        git commit -m "Update snapshots from CI"
+
+    - name: No changes to commit
+      if: steps.check_changes.outcome != 'success'
+      run: echo "No changes detected in snapshots directory."
