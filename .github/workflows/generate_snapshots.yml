@@ -1,0 +1,43 @@
+name: Update Playwright Snapshots (no commit)
+
+on:
+  workflow_dispatch:  # Allows manual triggering
+
+jobs:
+  update_snapshots:
+    runs-on: ubuntu-latest
+
+    services:
+      xvfb:  # Enable X virtual framebuffer for GUI apps like Playwright
+        image: 'jwalton/xvfb:latest'
+        options: '--privileged'
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v2
+
+    - name: Set up Node.js
+      uses: actions/setup-node@v2
+      with:
+        node-version: '16'  # Specify your Node.js version
+
+    - name: Install dependencies
+      run: npm install
+
+    - name: Install Playwright Browsers
+      run: npx playwright install
+
+    - name: Run Playwright tests and update snapshots
+      run: npx playwright test --update-snapshots
+
+    - name: Check for snapshot changes
+      id: check_changes
+      run: git diff --exit-code || echo "Changes detected"
+      continue-on-error: true  # Allow workflow to continue
+
+    - name: Upload snapshot artifacts
+      if: steps.check_changes.outcome == 'success'
+      uses: actions/upload-artifact@v2
+      with:
+        name: updated-snapshots
+        path: '**/__screenshots__/**/*'

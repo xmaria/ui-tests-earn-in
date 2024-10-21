@@ -14,8 +14,12 @@ export class FinancialCalculatorsPage extends BasePage {
   }
 
   async isOnFinancialCalculatorPage() {
-    this.acceptCookies();
     return await this.page.isVisible(this.finantialCalculatorsSection);
+  }
+
+  async navigateToFinancialCalculators(){
+    await this.navigateTo("/financial-calculators");
+    await this.acceptCookies()
   }
 
   async acceptCookies(){

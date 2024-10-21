@@ -4,7 +4,7 @@ import path from 'path';
 const config: PlaywrightTestConfig = {
   testDir: './src/tests',
   timeout: 30000,
-  //retries: 1,
+  snapshotDir: './snapshots',
   reporter: [['html', { outputFolder: 'html-report' }]],  // HTML reports
   /* Shared settings for all the projects below. See https://playwright.dev/docs/api/class-testoptions. */
   use: {

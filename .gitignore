@@ -2,3 +2,4 @@ node_modules/
 /test-results/
 /html-report/
 /playwright/.cache/
+/snapshots/**/*-darwin.png
