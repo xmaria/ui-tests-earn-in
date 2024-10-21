@@ -9,43 +9,18 @@ jobs:
 
     steps:
     - name: Checkout code
-      uses: actions/checkout@v3
+      uses: actions/checkout@v4
 
     - name: Set up Node.js
-      uses: actions/setup-node@v3
+      uses: actions/setup-node@v4
       with:
-        node-version: '20'
-    
-    - name: Install Browser Dependencies
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y \
-          libgtk-3-0 \
-          libxss1 \
-          libasound2 \
-          libx11-xcb1 \
-          libnss3 \
-          libgconf-2-4 \
-          libxcomposite1 \
-          libxrandr2 \
-          libxi6 \
-          libgdk-pixbuf2.0-0 \
-          libjpeg-dev \
-          fonts-liberation \
-          libglib2.0-0 \
-          libxss1 \
-          libwebp-dev \
-          libvpx-dev \
-          libicu-dev
+        node-version: lts/*
 
     - name: Install dependencies
-      run: npm install
-    
-    - name: Install Playwright dependencies
-      run: sudo npx playwright install-deps    
+      run: npm ci   
 
     - name: Install Playwright Browsers
-      run: npx playwright install
+      run: npx playwright install --with-deps
 
     - name: Run Playwright tests and update snapshots
       env:
