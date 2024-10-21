@@ -49,7 +49,6 @@ jobs:
     - name: Check for snapshot changes
       id: check_changes
       run: git diff --exit-code || echo "Changes detected"
-      continue-on-error: true  # Allow workflow to continue
 
     - name: Configure Git
       run: |
@@ -59,7 +58,7 @@ jobs:
     - name: Commit changes if any
       if: steps.check_changes.outcome == 'success'
       run: |
-        git add '**/snapshots/**/*'  # Adjust this path based on your directory structure
+        git add '/snapshots/**/*'  # Adjust this path based on your directory structure
         git commit -m "Update snapshots from CI"
         git push origin main  # Change 'main' to your default branch if different
 
