@@ -34,8 +34,8 @@ jobs:
           fonts-liberation \
           libglib2.0-0 \
           libxss1 \
-          libwebp6 \
-          libvpx6 \
+          libwebp-dev \
+          libvpx-dev \
           libicu-dev
 
     - name: Install dependencies
