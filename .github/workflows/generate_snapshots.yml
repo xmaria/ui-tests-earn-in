@@ -36,10 +36,15 @@ jobs:
           libxss1 \
           libwebp-dev \
           libvpx-dev \
-          libicu-dev
+          libicu-dev \ 
+          fonts-noto \
+          fonts-dejavu
 
     - name: Install dependencies
       run: npm install
+    
+    - name: Install Playwright dependencies
+      run: sudo npx playwright install-deps    
 
     - name: Install Playwright Browsers
       run: npx playwright install
