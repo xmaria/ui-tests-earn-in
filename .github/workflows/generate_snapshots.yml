@@ -15,6 +15,24 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '20'
+    
+    - name: Install WebKit dependencies
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y \
+            libx11-xcb1 \
+            libxcomposite1 \
+            libxdamage1 \
+            libxrandr2 \
+            libgbm-dev \
+            libgtk-3-0 \
+            libnotify4 \
+            libgconf-2-4 \
+            libasound2 \
+            libnss3 \
+            libxss1 \
+            libxtst6 \
+            libxshmfence1
 
     - name: Install dependencies
       run: npm install
