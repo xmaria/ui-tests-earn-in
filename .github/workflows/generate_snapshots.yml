@@ -51,9 +51,18 @@ jobs:
       run: git diff --exit-code || echo "Changes detected"
       continue-on-error: true  # Allow workflow to continue
 
-    - name: Upload snapshot artifacts
+    - name: Configure Git
+      run: |
+        git config --local user.name "github-actions"
+        git config --local user.email "github-actions@github.com"
+
+    - name: Commit changes if any
       if: steps.check_changes.outcome == 'success'
-      uses: actions/upload-artifact@v4
-      with:
-        name: updated-snapshots
-        path: '**/snapshots/**/*'
+      run: |
+        git add '**/snapshots/**/*'  # Adjust this path based on your directory structure
+        git commit -m "Update snapshots from CI"
+        git push origin main  # Change 'main' to your default branch if different
+
+    - name: No changes to commit
+      if: steps.check_changes.outcome != 'success'
+      run: echo "No changes detected in snapshots directory."
