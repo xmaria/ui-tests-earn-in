@@ -36,7 +36,7 @@ jobs:
           libxss1 \
           libwebp6 \
           libvpx6 \
-          libicu66
+          libicu-dev
 
     - name: Install dependencies
       run: npm install
