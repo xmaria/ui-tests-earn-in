@@ -37,7 +37,7 @@ jobs:
 
     - name: Upload snapshot artifacts
       if: steps.check_changes.outcome == 'success'
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: updated-snapshots
         path: '**/__screenshots__/**/*'
