@@ -23,7 +23,9 @@ jobs:
       run: npx playwright install
 
     - name: Run Playwright tests and update snapshots
-      run: npx playwright test --update-snapshots --trace on
+      env:
+        DEBUG: playwright:*
+      run: npx playwright test --update-snapshots
 
     - name: Check for snapshot changes
       id: check_changes
