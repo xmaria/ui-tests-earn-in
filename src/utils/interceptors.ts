@@ -4,7 +4,7 @@ export async function interceptSegmentRequests(page: Page, screenNameExpected: s
   await page.route('https://api.segment.io/v1/t', async (route: Route) => {
     const request = route.request();
 
-    // Log the request data
+    // get post data
     const postData = request.postDataJSON();
     console.log('Intercepted Segment request:', postData);
 
