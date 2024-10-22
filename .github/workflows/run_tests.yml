@@ -6,7 +6,7 @@ on:
   pull_request:
     branches: [ main ]
 jobs:
-  update_snapshots:
+  run_playwright_tests:
     runs-on: ubuntu-20.04
 
     steps:
@@ -37,3 +37,9 @@ jobs:
         name: playwright_html_report
         path: '**/html-report/**/*'
         retention-days: 2
+    
+    - name: Check failure status and mark job as failed
+      if: failure()  # This step runs only if any previous step failed
+      run: |
+        echo "One of the steps failed!"
+        exit 1
