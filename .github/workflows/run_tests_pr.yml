@@ -1,0 +1,70 @@
+name: Run Playwright Tests on PR
+on:
+  workflow_dispatch:
+  pull_request:
+    branches: [ main ]
+jobs:
+  run_playwright_tests_on_pr:
+    runs-on: ubuntu-20.04
+
+    steps:
+      - name: Checkout the current branch
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
+          ref: ${{ github.head_ref }}
+      
+      - name: Clean up workspace
+        run: git clean -fdx
+
+      - name: Set Git committer identity
+        run: |
+          git config --local user.name "github-actions"
+          git config --local user.email "github-actions@github.com"    
+
+      - name: Create a temporary branch and merge main
+        run: |
+          git fetch origin main
+          git status
+          BRANCH_NAME="temp_${{ github.head_ref }}_main"
+          echo "Using branch name $BRANCH_NAME"
+          git checkout -b $BRANCH_NAME
+          git merge origin/main --allow-unrelated-histories --no-commit --no-ff -X ignore-space-change
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: 20
+
+      - name: Install dependencies
+        run: npm ci   
+
+      - name: Install Playwright Browsers
+        run: npx playwright install --with-deps
+
+      - name: Run Playwright tests
+        id: run_tests
+        env:
+          DEBUG: playwright:*
+        run: npx playwright test
+        continue-on-error: true
+
+      - name: playwright test artifacts
+        uses: actions/upload-artifact@v4
+        if: ${{ !cancelled() }}
+        with:
+          name: playwright_html_report
+          path: '**/html-report/**/*'
+          retention-days: 2
+      
+      - name: Cleanup temporary branch
+        if: always()  # Ensure this runs even if tests fail
+        run: |
+          git checkout ${{ github.head_ref }}  # Switch back to the original branch
+          git branch -D "temp_${{ github.head_ref }}_main"  # Delete the temporary branch
+      
+      - name: Check failure status of tests and mark job as failed
+        if: ${{ steps.run_tests.outcome == 'failure' }} 
+        run: |
+          echo "Some tests have failed!"
+          exit 1

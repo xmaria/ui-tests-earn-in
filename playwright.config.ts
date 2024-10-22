@@ -1,5 +1,4 @@
 import { PlaywrightTestConfig, devices } from '@playwright/test';
-import path from 'path';
 
 const config: PlaywrightTestConfig = {
   testDir: './src/tests',

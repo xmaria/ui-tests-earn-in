@@ -1,7 +1,7 @@
 name: Update Playwright Baseline Snapshots
 
 on:
-  workflow_dispatch:  # Allows manual triggering
+  workflow_dispatch:
 
 permissions:
   contents: write 

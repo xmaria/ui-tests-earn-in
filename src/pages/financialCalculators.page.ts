@@ -31,7 +31,6 @@ export class FinancialCalculatorsPage extends BasePage {
         console.log('Cookies accepted');
       }
     } catch (error) {
-      // Handle case where the button does not appear
       console.log('Cookies preference did not appear within the timeout');
     }
   }
