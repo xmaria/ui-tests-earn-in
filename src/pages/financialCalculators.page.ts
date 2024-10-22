@@ -23,8 +23,16 @@ export class FinancialCalculatorsPage extends BasePage {
   }
 
   async acceptCookies(){
-    if (await this.page.isVisible(this.acceptCookiesBtn)) {
-      this.page.locator(this.acceptCookiesBtn).click();
+    try {
+      const button = await this.page.waitForSelector(this.acceptCookiesBtn);
+      
+      if (button) {
+        await button.click();
+        console.log('Cookies accepted');
+      }
+    } catch (error) {
+      // Handle case where the button does not appear
+      console.log('Cookies preference did not appear within the timeout');
     }
   }
 
